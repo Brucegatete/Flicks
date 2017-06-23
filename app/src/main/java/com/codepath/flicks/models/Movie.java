@@ -11,10 +11,8 @@ public class Movie {
     //values from API
     private String title;
     private String overview;
-
-
-
     private String posterPath; //only the path
+    private String backdropPath;
 
 
     //initialize JSON data
@@ -22,6 +20,11 @@ public class Movie {
         title = object.getString("title");
         overview = object.getString("overview");
         posterPath = object.getString("poster_path");
+        backdropPath = object.getString("backdrop_path");
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
     }
 
     public String getTitle() {

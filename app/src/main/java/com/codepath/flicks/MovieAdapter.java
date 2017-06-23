@@ -1,8 +1,8 @@
 package com.codepath.flicks;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,8 @@ import com.codepath.flicks.models.Config;
 import com.codepath.flicks.models.Movie;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * Created by brucegatete on 6/22/17.
@@ -61,16 +63,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         holder.tvTitle.setText(movie.getTitle());
         holder.tvOverview.setText(movie.getOverview());
 
-        // - TODO set image
+        // determine the current orientation
+        boolean isPotrait = context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+
         //create an  url  for poster image
-        String imageUrl =config.getImageUrl(config.getPosterSize(), movie.getPosterPath());
-        Log.d("debug", "imageUrl is " + imageUrl);
+        String imageUrl = null;
+
+        // if portrit mode load poster image
+        if (isPotrait) {
+            imageUrl = config.getImageUrl(config.getPosterSize(), movie.getPosterPath());
+        } else {
+            // load the bacdrop image
+            imageUrl = config.getImageUrl(config.getBackdropSize(), movie.getBackdropPath());
+        }
+
+        // get the correct placeholder and imageview for the current orientation
+        int placeholderId = isPotrait ? R.drawable.flicks_movie_placeholder : R.drawable.flicks_backdrop_placeholder;
+        ImageView imageView = isPotrait ? holder.ivPosterImage : holder.ivBackdropImage;
+
+
         //load image using glide
         Glide.with(context)
                 .load(imageUrl)
-                .placeholder(R.drawable.flicks_movie_placeholder)
-                .error(R.drawable.flicks_movie_placeholder)
-                .into(holder.ivPosterImage);
+                .placeholder(placeholderId)
+                .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
+                .error(placeholderId)
+                .into(imageView);
 
 
     }
@@ -85,12 +103,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         // track view objects
         ImageView ivPosterImage;
+        ImageView ivBackdropImage;
         TextView tvTitle;
         TextView tvOverview;
         public ViewHolder(View itemView) {
             super(itemView);
             //lookup view objects by id
             ivPosterImage = (ImageView) itemView.findViewById(R.id.ivPosterImage);
+            ivBackdropImage = (ImageView) itemView.findViewById(R.id.ivBackdropImage);
             tvOverview = (TextView) itemView.findViewById(R.id.tvOverview);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
 
