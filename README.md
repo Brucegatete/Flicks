@@ -30,7 +30,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='file:///Users/brucegatete/Downloads/walkthrough_flick.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/Brucegatete/Flicks/blob/master/Flick-demo.mp4' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
